@@ -31,7 +31,7 @@ export function GebietResultsTable({ rows }: GebietResultsTableProps) {
     ch.accessor("Gruppenname", {}),
     ch.accessor("Anzahl", {
       header: "Stimmen",
-      cell: (row: CellContext<ResultRow, number>) => valueWithChanges(row.getValue(), row.row.original.VorpAnzahl ? row.row.original.VorpAnzahl - row.getValue() : null, "", 0),
+      cell: (row: CellContext<ResultRow, number>) => valueWithChanges(row.getValue(), row.row.original.VorpAnzahl ? row.getValue() - row.row.original.VorpAnzahl  : null, "", 0),
     }),
     ch.accessor("Prozent", {
       cell: (row: CellContext<ResultRow, number>) => valueWithChanges(row.getValue(), row.row.original.DiffProzentPkt, "%", 2),
