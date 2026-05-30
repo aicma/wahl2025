@@ -35,6 +35,7 @@ export function parseCsv(
       header: true,
       skipEmptyLines: true,
       dynamicTyping: true,
+      transform: (value) => value.replace(',', '.'),
       ...(delimiter ? { delimiter } : {}),
     });
     if (result.errors.length > 0) {
@@ -49,11 +50,13 @@ export function parseCsv(
       resolve(result.data);
       return;
     }
-
+    
     const validated: ResultRow[] = [];
     for (let i = 0; i < result.data.length; i++) {
       const parsed = rowSchema.safeParse(result.data[i]);
       if (!parsed.success) {
+        
+      console.debug("CSV parse error", parsed, result.data[i]   );
         reject(
           new Error(
             `CSV row ${i + 1} failed validation: ${parsed.error.issues.map((e) => e.message).join(", ")}`,

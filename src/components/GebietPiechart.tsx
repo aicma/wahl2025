@@ -1,11 +1,19 @@
 import {
   PieChart,
   Pie,
-  Cell,
   Tooltip,
-  Legend,
   ResponsiveContainer,
+  Sector,
+  type PieSectorShapeProps,
 } from "recharts"
+import {
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@/components/ui/chart"
 import type { ResultRow } from "@/schema/kerg2"
 
 interface GebietPiechartProps {
@@ -32,6 +40,9 @@ interface ChartDatum {
   value: number
   percent: number | undefined
 }
+const PieSector = (props: PieSectorShapeProps) => (
+  <Sector {...props} fill={COLORS[props.index % COLORS.length]} />
+)
 
 export function GebietPiechart({ resultRows }: GebietPiechartProps) {
   const data: ChartDatum[] = resultRows
@@ -51,29 +62,30 @@ export function GebietPiechart({ resultRows }: GebietPiechartProps) {
   }
 
   return (
-    <ResponsiveContainer width="100%" height={320}>
-      <PieChart>
-        <Pie
-          data={data}
-          dataKey="value"
-          nameKey="name"
-          cx="50%"
-          cy="50%"
-          outerRadius={110}
-          label={({ name, percent }) =>
-            percent != null
-              ? `${name} ${percent.toLocaleString("de-DE", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} %`
-              : name
-          }
-          labelLine={false}
-        >
-          {data.map((_entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-          ))}
-        </Pie>
-        <Tooltip formatter={(value: number) => value.toLocaleString("de-DE")} />
-        <Legend />
-      </PieChart>
-    </ResponsiveContainer>
+    <ChartContainer config={{}} className="max-h-[320px] min-h-[200px] w-full">
+      <ResponsiveContainer width="100%" height={320}>
+        <PieChart accessibilityLayer>
+          <Pie
+            data={data}
+            dataKey="value"
+            nameKey="name"
+            cx="50%"
+            cy="50%"
+            outerRadius={110}
+            label={({ name, percent }) =>
+              percent != null
+                ? `${name} ${percent.toLocaleString("de-DE", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} %`
+                : name
+            }
+            labelLine={false}
+            shape={PieSector}
+          ></Pie>
+          <Tooltip
+            formatter={(value: number) => value.toLocaleString("de-DE")}
+          />
+          <ChartTooltip content={<ChartTooltipContent />} />
+        </PieChart>
+      </ResponsiveContainer>
+    </ChartContainer>
   )
 }

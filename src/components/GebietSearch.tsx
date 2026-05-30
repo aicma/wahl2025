@@ -37,7 +37,9 @@ export function GebietSearch({
   // Group options by Gebietsart
   const grouped = GEBIETSART_ORDER.map((art) => ({
     art,
-    items: options.filter((o) => o.gebietsart === art),
+    items: options
+      .filter((o) => o.gebietsart === art)
+      .sort((a, b) => (a.gebietsname < b.gebietsname ? -1 : 1)),
   })).filter((g) => g.items.length > 0)
 
   function handleSelect(option: GebietOption) {
@@ -76,7 +78,7 @@ export function GebietSearch({
                 {items.map((option) => (
                   <CommandItem
                     key={option.key}
-                    value={option.key}
+                    value={option.gebietsname}
                     onSelect={() => handleSelect(option)}
                   >
                     <Check

@@ -3,9 +3,7 @@ import type { GebietOption } from "./idb";
 
 const STORAGE_KEY = "gebiet-selected-key";
 
-function readInitial(options: GebietOption[]): string | null {
-  if (options.length === 0) return null;
-
+function readInitial(): string | null {
   // URL takes priority over localStorage
   const params = new URLSearchParams(window.location.search);
   const fromUrl = params.get("gebiet");
@@ -15,11 +13,10 @@ function readInitial(options: GebietOption[]): string | null {
   return raw;
 }
 
-export function useGebietSelection(options: GebietOption[]) {
+export function useGebietSelection() {
   const [selected, setSelectedState] = useState<string | null>(() =>
-    readInitial(options),
+    readInitial(),
   );
-
   const setSelected =
     (option: GebietOption | null) => {
       setSelectedState(option ? option.key : null);

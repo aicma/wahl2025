@@ -1,7 +1,6 @@
 import { fetchCsv } from "./fetchCsv";
 import { parseCsv, type ParseCsvOptions } from "./parseCsv";
 import {
-  storeRecords,
   queryRecords,
   queryGebietOptions,
   queryGebietResults,
@@ -16,6 +15,6 @@ export async function importCsv(
 ): Promise<ResultRow[]> {
   const csvText = await fetchCsv(url);
   const records = await parseCsv(csvText, parseOptions);
-  await storeRecords(url, records);
+  // await storeRecords(url, records);
   return records;
 }
