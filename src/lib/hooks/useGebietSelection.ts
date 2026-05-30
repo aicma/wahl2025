@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { GebietOption } from "../idb";
+import type { GebietOption } from "@/schema/gebietOptions"
 
 const STORAGE_KEY = "gebiet-selected-keys";
 const DEFAULT_KEY = "Bund99";
@@ -58,5 +58,5 @@ export function useGebietSelection() {
     });
   }
 
-  return { selectedKeys, updateKey, removePanel, addGebiet: addPanel } as const;
+  return { selectedKeys, updateKey, removePanel, addPanel } as const;
 }

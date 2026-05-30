@@ -14,7 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import type { GebietOption } from "@/lib/idb"
+import type { GebietOption } from "@/schema/gebietOptions"
 import { cn } from "@/lib/utils"
 
 const GEBIETSART_ORDER = ["Bund", "Land", "Wahlkreis"]

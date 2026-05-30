@@ -1,9 +1,8 @@
 import {
   PieChart,
   Pie,
-  Tooltip,
-  ResponsiveContainer,
   Sector,
+  ResponsiveContainer,
   type PieSectorShapeProps,
 } from "recharts"
 import {
@@ -12,33 +11,22 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import type { ResultRow } from "@/schema/kerg2"
+import { getPartyColor } from "@/lib/utils"
 
 interface GebietPiechartProps {
   resultRows: ResultRow[]
 }
-
-const COLORS = [
-  "#2563eb", // blue-600
-  "#dc2626", // red-600
-  "#16a34a", // green-600
-  "#d97706", // amber-600
-  "#9333ea", // purple-600
-  "#0891b2", // cyan-600
-  "#db2777", // pink-600
-  "#65a30d", // lime-600
-  "#ea580c", // orange-600
-  "#0284c7", // sky-600
-  "#7c3aed", // violet-600
-  "#059669", // emerald-600
-]
 
 interface ChartDatum {
   name: string
   value: number
   percent: number | undefined
 }
-const PieSector = (props: PieSectorShapeProps) => (
-  <Sector {...props} fill={COLORS[props.index % COLORS.length]} />
+
+const PieSector = (
+  props: PieSectorShapeProps & { name?: string; index?: number }
+) => (
+  <Sector {...props} fill={getPartyColor(props.name ?? "", props.index ?? 0)} />
 )
 
 export function GebietPiechart({ resultRows }: GebietPiechartProps) {
@@ -101,7 +89,7 @@ export function GebietPiechart({ resultRows }: GebietPiechartProps) {
             }
             labelLine={false}
             shape={PieSector}
-          ></Pie>
+          />
           <ChartTooltip content={<ChartTooltipContent />} />
         </PieChart>
       </ResponsiveContainer>

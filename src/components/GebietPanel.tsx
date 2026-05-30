@@ -2,7 +2,7 @@ import { GebietSearch } from "@/components/GebietSearch"
 import { GebietPiechart } from "@/components/GebietPiechart"
 import { GebietContext } from "@/components/GebietContext"
 import { GebietResultsTable } from "@/components/GebietResultsTable"
-import type { GebietOption } from "@/lib/idb"
+import type { GebietOption } from "@/schema/gebietOptions"
 import type { ResultRow } from "@/schema/kerg2"
 import { Button } from "./ui/button"
 import {

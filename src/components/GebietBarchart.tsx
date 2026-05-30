@@ -1,14 +1,5 @@
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  ResponsiveContainer,
-  Legend,
-  Tooltip,
-} from "recharts"
-import type { GebietOption } from "@/lib/idb"
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend } from "recharts"
+import type { GebietOption } from "@/schema/gebietOptions"
 import type { ResultRow } from "@/schema/kerg2"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "./ui/chart"
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { importCsv } from "@/lib/importCsv"
-import type { GebietOption } from "@/lib/idb"
+import type { GebietOption } from "@/schema/gebietOptions"
 import { kerg2RowSchema, type ResultRow } from "@/schema/kerg2"
 import { GebietPanel } from "@/components/GebietPanel"
 import { GebietBarchart } from "@/components/GebietBarchart"
@@ -23,7 +23,7 @@ export function App() {
   )
   const [options, setOptions] = useState<GebietOption[]>([])
   const [resultRows, setResultRows] = useState<ResultRow[]>([])
-  const { selectedKeys, updateKey, removePanel, addGebiet } =
+  const { selectedKeys, updateKey, removePanel, addPanel } =
     useGebietSelection()
 
   // On mount, load Gebiet options from IndexedDB
@@ -100,7 +100,9 @@ export function App() {
             resultRows={resultRows}
           />
         )}
-        <div className="grid grid-cols-2 gap-4">
+        <div
+          className={`grid gap-4 ${selectedKeys.length > 1 ? "grid-cols-2" : ""}`}
+        >
           {selectedKeys.map((key, index) => (
             <GebietPanel
               key={index}
@@ -114,7 +116,7 @@ export function App() {
         </div>
         <Button
           className="fixed bottom-6 left-1/2 -translate-x-1/2 rounded-full"
-          onClick={() => addGebiet()}
+          onClick={() => addPanel()}
         >
           + Add Gebiet
         </Button>
