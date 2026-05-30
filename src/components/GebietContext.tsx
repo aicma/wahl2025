@@ -32,10 +32,6 @@ export function GebietContext({ systemRows }: GebietContextProps) {
 
   const wahlberechtigte = find("Wahlberechtigte")
   const waehlende = find("Wählende")
-  const ungueltigeErst = find("Ungültige", 1)
-  const ungueltigeZweit = find("Ungültige", 2)
-  const gueltigeErst = find("Gültige", 1)
-  const gueltigeZweit = find("Gültige", 2)
 
   if (!waehlende && !wahlberechtigte) {
     return null
