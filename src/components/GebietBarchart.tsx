@@ -73,7 +73,7 @@ export function GebietBarchart({
 
   return (
     <div className="sticky top-0 z-10 rounded-lg border bg-background p-4">
-      <h3 className="mb-3 text-sm font-semibold">Zweitstimmen-Vergleich (%)</h3>
+      <h3 className="mb-3 text-sm font-semibold">Vergleich (%)</h3>
       <ChartContainer config={{}} className="h-[200px] min-h-[200px] w-full">
         <BarChart
           data={data}

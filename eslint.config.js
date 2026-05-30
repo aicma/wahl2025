@@ -4,6 +4,7 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
+import jsonFiles from 'eslint-plugin-json-files'
 
 export default defineConfig([
   globalIgnores(['dist']),
@@ -17,6 +18,19 @@ export default defineConfig([
     ],
     languageOptions: {
       globals: globals.browser,
+    },
+  },
+  {
+    files: ['**/*.json'],
+    ignores: [
+      'package.json',
+      'package-lock.json',
+      'tsconfig*.json',
+      'components.json',
+    ],
+    plugins: { 'json-files': jsonFiles },
+    rules: {
+      'json-files/sort-keys': 'warn',
     },
   },
 ])

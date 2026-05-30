@@ -8,8 +8,9 @@ import { Button } from "@/components/ui/button"
 import { useGebietSelection } from "@/lib/hooks/useGebietSelection"
 import { ThemeSwitcher } from "@/components/ThemeSwitcher"
 
-const BTW25_CSV_URL =
-  "/csv-proxy/bundestagswahlen/2025/ergebnisse/opendata/btw25/csv/kerg2.csv"
+const BTW25_CSV_URL = import.meta.env.DEV
+  ? "/csv-proxy/bundestagswahlen/2025/ergebnisse/opendata/btw25/csv/kerg2.csv"
+  : "/wahl2025/data/kerg2.csv"
 const BTW25_PARSE_OPTIONS = {
   delimiter: ";",
   skipLines: 9,

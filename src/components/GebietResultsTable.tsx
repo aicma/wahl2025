@@ -5,12 +5,20 @@ import {
   flexRender,
   createColumnHelper,
   type SortingState,
+  type CellContext,
 } from "@tanstack/react-table"
 import type { ResultRow } from "@/schema/kerg2"
 import React from "react"
 
 interface GebietResultsTableProps {
   rows: ResultRow[]
+}
+
+function valueWithChanges(value: number | null, changes: number | null | undefined, suffix: string = "", precision: number = 0) {
+  if (value == null) return '-'
+  return (
+    <p>{value.toFixed(precision)}{suffix} {changes && <span className={changes >= 0 ? "text-green-500" : "text-red-500"}>({changes >= 0 ? "+" : ""}{changes.toFixed(precision)}{suffix})</span>}</p>
+  )
 }
 
 export function GebietResultsTable({ rows }: GebietResultsTableProps) {
@@ -21,10 +29,12 @@ export function GebietResultsTable({ rows }: GebietResultsTableProps) {
   const ch = createColumnHelper<ResultRow>()
   const columns = [
     ch.accessor("Gruppenname", {}),
-    ch.accessor("Anzahl", {}),
+    ch.accessor("Anzahl", {
+      header: "Stimmen",
+      cell: (row: CellContext<ResultRow, number>) => valueWithChanges(row.getValue(), row.row.original.VorpAnzahl),
+    }),
     ch.accessor("Prozent", {
-      cell: (info) =>
-        info.getValue() != null ? `${info.getValue()!.toFixed(2)} %` : "",
+      cell: (row: CellContext<ResultRow, number>) => valueWithChanges(row.getValue(), row.row.original.VorpProzent, "%", 2),
     }),
   ]
 
