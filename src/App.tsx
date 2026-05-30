@@ -3,7 +3,10 @@ import { importCsv } from "@/lib/importCsv"
 import type { GebietOption } from "@/lib/idb"
 import { kerg2RowSchema, type ResultRow } from "@/schema/kerg2"
 import { GebietPanel } from "@/components/GebietPanel"
+import { GebietBarchart } from "@/components/GebietBarchart"
 import { Button } from "@/components/ui/button"
+import { useGebietSelection } from "@/lib/hooks/useGebietSelection"
+import { ThemeSwitcher } from "@/components/ThemeSwitcher"
 
 const BTW25_CSV_URL =
   "/csv-proxy/bundestagswahlen/2025/ergebnisse/opendata/btw25/csv/kerg2.csv"
@@ -20,7 +23,9 @@ export function App() {
   )
   const [options, setOptions] = useState<GebietOption[]>([])
   const [resultRows, setResultRows] = useState<ResultRow[]>([])
-  const [panelIds, setPanelIds] = useState<number[]>([0])
+  const { selectedKeys, updateKey, removePanel, addGebiet } =
+    useGebietSelection()
+
   // On mount, load Gebiet options from IndexedDB
   useEffect(() => {
     let ignore = false
@@ -74,9 +79,12 @@ export function App() {
   return (
     <div className="flex min-h-svh flex-col gap-6 p-6">
       <div className="flex flex-col gap-4">
-        <h1 className="text-lg font-semibold">
-          Bundestagswahl 2025 — Ergebnisse
-        </h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-lg font-semibold">
+            Bundestagswahl 2025 — Ergebnisse
+          </h1>
+          <ThemeSwitcher />
+        </div>
 
         {status && (
           <p
@@ -85,20 +93,28 @@ export function App() {
             {status.message}
           </p>
         )}
-        <div className="flex gap-4">
-          {panelIds.map((id) => (
+        {selectedKeys.length >= 2 && (
+          <GebietBarchart
+            selectedKeys={selectedKeys}
+            options={options}
+            resultRows={resultRows}
+          />
+        )}
+        <div className="grid grid-cols-2 gap-4">
+          {selectedKeys.map((key, index) => (
             <GebietPanel
-              key={id}
+              key={index}
               options={options}
               resultRows={resultRows}
-              onClose={() => setPanelIds((ids) => ids.filter((i) => i !== id))}
+              selectedKey={key}
+              onSelect={(option) => updateKey(index, option)}
+              onClose={() => removePanel(index)}
             />
           ))}
         </div>
         <Button
-          variant="outline"
-          className="self-start"
-          onClick={() => setPanelIds((ids) => [...ids, Math.max(...ids) + 1])}
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 rounded-full"
+          onClick={() => addGebiet()}
         >
           + Add Gebiet
         </Button>

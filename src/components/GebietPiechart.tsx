@@ -8,11 +8,8 @@ import {
 } from "recharts"
 import {
   ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from "@/components/ui/chart"
 import type { ResultRow } from "@/schema/kerg2"
 
@@ -45,13 +42,38 @@ const PieSector = (props: PieSectorShapeProps) => (
 )
 
 export function GebietPiechart({ resultRows }: GebietPiechartProps) {
-  const data: ChartDatum[] = resultRows
-    .filter((row) => row.Stimme === 2 && row.Anzahl != null && row.Anzahl > 0)
+  const qualifying = resultRows.filter(
+    (row) => row.Stimme === 2 && row.Anzahl != null && row.Anzahl > 0
+  )
+
+  const main: ChartDatum[] = qualifying
+    .filter((row) => row.Prozent != null && row.Prozent >= 1)
     .map((row) => ({
       name: row.Gruppenname,
       value: row.Anzahl as number,
-      percent: row.Prozent,
+      percent: row.Prozent ?? undefined,
     }))
+
+  const otherAnzahl = qualifying
+    .filter((row) => row.Prozent == null || row.Prozent < 1)
+    .reduce((sum, row) => sum + (row.Anzahl as number), 0)
+
+  const totalAnzahl = qualifying.reduce(
+    (sum, row) => sum + (row.Anzahl as number),
+    0
+  )
+
+  const data: ChartDatum[] =
+    otherAnzahl > 0
+      ? [
+          ...main,
+          {
+            name: "Sonstige",
+            value: otherAnzahl,
+            percent: totalAnzahl > 0 ? (otherAnzahl / totalAnzahl) * 100 : 0,
+          },
+        ]
+      : main
 
   if (data.length === 0) {
     return (
@@ -80,9 +102,6 @@ export function GebietPiechart({ resultRows }: GebietPiechartProps) {
             labelLine={false}
             shape={PieSector}
           ></Pie>
-          <Tooltip
-            formatter={(value: number) => value.toLocaleString("de-DE")}
-          />
           <ChartTooltip content={<ChartTooltipContent />} />
         </PieChart>
       </ResponsiveContainer>

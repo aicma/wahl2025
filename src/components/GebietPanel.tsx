@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { GebietSearch } from "@/components/GebietSearch"
 import { GebietPiechart } from "@/components/GebietPiechart"
 import { GebietContext } from "@/components/GebietContext"
@@ -6,21 +5,28 @@ import { GebietResultsTable } from "@/components/GebietResultsTable"
 import type { GebietOption } from "@/lib/idb"
 import type { ResultRow } from "@/schema/kerg2"
 import { Button } from "./ui/button"
-import { X } from "lucide-react"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "./ui/collapsible"
+import { X, ChevronsUpDown } from "lucide-react"
 
 interface GebietPanelProps {
   options: GebietOption[]
   resultRows: ResultRow[]
+  selectedKey: string | null
+  onSelect: (option: GebietOption | null) => void
   onClose: () => void
 }
 
 export function GebietPanel({
   options,
   resultRows,
+  selectedKey,
+  onSelect,
   onClose,
 }: GebietPanelProps) {
-  const [selectedKey, setSelectedKey] = useState<string | null>("Bund99") // Default to "Bund99" (whole Germany)
-
   const selected = options.find((o) => o.key === selectedKey) ?? null
 
   const selectedRows = resultRows.filter(
@@ -39,7 +45,7 @@ export function GebietPanel({
         <GebietSearch
           options={options}
           selected={selectedKey}
-          onSelect={(option) => setSelectedKey(option?.key ?? null)}
+          onSelect={onSelect}
         />
         <Button
           variant="outline"
@@ -62,7 +68,21 @@ export function GebietPanel({
 
           <GebietPiechart resultRows={dataRows} />
           <GebietContext systemRows={systemRows} />
-          <GebietResultsTable rows={dataRows} />
+          <Collapsible>
+            <CollapsibleTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex w-full items-center justify-between"
+              >
+                Ergebnistabelle
+                <ChevronsUpDown className="h-4 w-4" />
+              </Button>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <GebietResultsTable rows={dataRows} />
+            </CollapsibleContent>
+          </Collapsible>
         </>
       )}
     </div>

@@ -62,25 +62,6 @@ export function GebietContext({ systemRows }: GebietContextProps) {
           unit="%"
         />
       </div>
-      <hr className="border-border" />
-      <div className="space-y-1">
-        <StatRow
-          label="Gültige Erststimmen"
-          value={gueltigeErst?.Anzahl?.toLocaleString("de-DE")}
-        />
-        <StatRow
-          label="Ungültige Erststimmen"
-          value={ungueltigeErst?.Anzahl?.toLocaleString("de-DE")}
-        />
-        <StatRow
-          label="Gültige Zweitstimmen"
-          value={gueltigeZweit?.Anzahl?.toLocaleString("de-DE")}
-        />
-        <StatRow
-          label="Ungültige Zweitstimmen"
-          value={ungueltigeZweit?.Anzahl?.toLocaleString("de-DE")}
-        />
-      </div>
     </div>
   )
 }

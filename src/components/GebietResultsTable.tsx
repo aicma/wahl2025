@@ -1,6 +1,7 @@
 import {
   useReactTable,
   getCoreRowModel,
+  getSortedRowModel,
   flexRender,
   createColumnHelper,
   type SortingState,
@@ -13,28 +14,29 @@ interface GebietResultsTableProps {
 }
 
 export function GebietResultsTable({ rows }: GebietResultsTableProps) {
-  const [sort, setSort] = React.useState<SortingState>([])
+  const [sort, setSort] = React.useState<SortingState>([
+    { id: "Prozent", desc: true },
+  ])
 
   const ch = createColumnHelper<ResultRow>()
   const columns = [
     ch.accessor("Gruppenname", {}),
-    ch.accessor("Gruppenart", {}),
     ch.accessor("Anzahl", {}),
-    ch.accessor("Prozent", {}),
-    ch.accessor("VorpAnzahl", {}),
-    ch.accessor("VorpProzent", {}),
-    ch.accessor("DiffProzent", {}),
-    ch.accessor("DiffProzentPkt", {}),
+    ch.accessor("Prozent", {
+      cell: (info) =>
+        info.getValue() != null ? `${info.getValue()!.toFixed(2)} %` : "",
+    }),
   ]
 
   const table = useReactTable({
-    data: rows,
+    data: rows.filter((r) => r.Prozent), // Only show Zweitstimme results in the table
     columns,
     state: {
       sorting: sort,
     },
     onSortingChange: setSort,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
   })
 
   return (
