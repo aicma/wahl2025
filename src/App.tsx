@@ -20,8 +20,6 @@ export function App() {
   const { selectedKeys, updateKey, removePanel, addPanel } =
     useGebietSelection()
 
-  const resultRows = records
-
   if (loading)
     return (
       <div className="flex min-h-svh items-center justify-center p-6">
@@ -52,7 +50,7 @@ export function App() {
           <GebietBarchart
             selectedKeys={selectedKeys}
             options={gebietOptions}
-            resultRows={resultRows}
+            resultRows={records}
           />
         )}
         <div
@@ -62,7 +60,7 @@ export function App() {
             <GebietPanel
               key={index}
               options={gebietOptions}
-              resultRows={resultRows}
+              resultRows={records}
               selectedKey={key}
               onSelect={(option) => updateKey(index, option)}
               onClose={() => removePanel(index)}
