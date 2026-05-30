@@ -6,6 +6,7 @@ import babel from "@rolldown/plugin-babel"
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: "https://aicma.github.io/wahl2025/",
   plugins: [
     react(),
     babel({
