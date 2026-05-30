@@ -1,21 +1,14 @@
-# React + TypeScript + Vite + shadcn/ui
+### Wahlergebnis viewer
 
-This is a template for a new Vite project with React, TypeScript, and shadcn/ui.
+## Stack
 
-## Adding components
+- Vite + React + Typescript
+- Shadcn + RadixUI for quick UI development
+- Papaparse + Tanstack Table for CSV parsing and Table-Display
+- Prettier code formatting
 
-To add components to your app, run the following command:
+## Decisions
 
-```bash
-npx shadcn@latest add button
-```
-
-This will place the ui components in the `src/components` directory.
-
-## Using components
-
-To use the components in your app, import them as follows:
-
-```tsx
-import { Button } from "@/components/ui/button"
-```
+- No Router since Single View Application
+- Persist Data in Browsers indexedDB, since values will not change, reload is very unlikely, but possible through user-action
+- Tried Openspec for Agentic Coding
