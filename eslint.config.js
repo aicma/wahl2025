@@ -20,17 +20,4 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
-  {
-    files: ['**/*.json'],
-    ignores: [
-      'package.json',
-      'package-lock.json',
-      'tsconfig*.json',
-      'components.json',
-    ],
-    plugins: { 'json-files': jsonFiles },
-    rules: {
-      'json-files/sort-keys': 'warn',
-    },
-  },
 ])

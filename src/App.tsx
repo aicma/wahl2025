@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react"
-import { importCsv } from "@/lib/importCsv"
-import type { GebietOption } from "@/schema/gebietOptions"
-import { kerg2RowSchema, type ResultRow } from "@/schema/kerg2"
+import { useCSV } from "@/lib/hooks/useCSV"
+import { kerg2RowSchema } from "@/schema/kerg2"
 import { GebietPanel } from "@/components/GebietPanel"
 import { GebietBarchart } from "@/components/GebietBarchart"
 import { Button } from "@/components/ui/button"
@@ -18,55 +16,11 @@ const BTW25_PARSE_OPTIONS = {
 }
 
 export function App() {
-  const [loading, setLoading] = useState(false)
-  const [status, setStatus] = useState<{ ok: boolean; message: string } | null>(
-    null
-  )
-  const [options, setOptions] = useState<GebietOption[]>([])
-  const [resultRows, setResultRows] = useState<ResultRow[]>([])
+  const { records, gebietOptions, loading, status } = useCSV(BTW25_CSV_URL, BTW25_PARSE_OPTIONS)
   const { selectedKeys, updateKey, removePanel, addPanel } =
     useGebietSelection()
 
-  // On mount, load Gebiet options from IndexedDB
-  useEffect(() => {
-    let ignore = false
-    setLoading(true)
-
-    importCsv(BTW25_CSV_URL, BTW25_PARSE_OPTIONS)
-      .then((records) => {
-        if (ignore) return
-        setResultRows(records)
-
-        setOptions(
-          records.reduce<GebietOption[]>((acc, row) => {
-            if (
-              !acc.some(
-                (o) => o.key === `${row.Gebietsart}${row.Gebietsnummer}`
-              )
-            ) {
-              acc.push({
-                key: `${row.Gebietsart}${row.Gebietsnummer}`,
-                gebietsart: row.Gebietsart,
-                gebietsnummer: row.Gebietsnummer,
-                gebietsname: row.Gebietsname,
-              })
-            }
-            return acc
-          }, [])
-        )
-      })
-      .catch((error) => {
-        const msg = error instanceof Error ? error.message : String(error)
-        setStatus({ ok: false, message: msg })
-      })
-      .finally(() => {
-        if (!ignore) setLoading(false)
-      })
-
-    return () => {
-      ignore = true
-    }
-  }, [])
+  const resultRows = records
 
   if (loading)
     return (
@@ -97,7 +51,7 @@ export function App() {
         {selectedKeys.length >= 2 && (
           <GebietBarchart
             selectedKeys={selectedKeys}
-            options={options}
+            options={gebietOptions}
             resultRows={resultRows}
           />
         )}
@@ -107,7 +61,7 @@ export function App() {
           {selectedKeys.map((key, index) => (
             <GebietPanel
               key={index}
-              options={options}
+              options={gebietOptions}
               resultRows={resultRows}
               selectedKey={key}
               onSelect={(option) => updateKey(index, option)}

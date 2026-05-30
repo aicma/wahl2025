@@ -4,14 +4,17 @@ export async function fetchCsv(url: string): Promise<string> {
     response = await fetch(url);
   } catch (err) {
     throw new Error(
-      `Network or CORS failure fetching CSV from "${url}": ${
-        err instanceof Error ? err.message : String(err)
-      }`,
+      `Network or CORS failure fetching CSV from "${url}": ${err instanceof Error ? err.message : String(err)
+      }`, {
+      cause: err,
+    }
     );
   }
   if (!response.ok) {
     throw new Error(
-      `HTTP ${response.status} ${response.statusText} fetching CSV from "${url}"`,
+      `HTTP ${response.status} ${response.statusText} fetching CSV from "${url}"`, {
+      cause: response.status >= 500 ? "server" : "client",
+    }
     );
   }
   return response.text();
