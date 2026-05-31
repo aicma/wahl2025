@@ -1,11 +1,14 @@
 import path from "path"
 import tailwindcss from "@tailwindcss/vite"
 import react, {reactCompilerPreset} from "@vitejs/plugin-react"
-import { defineConfig } from "vite"
+import { defineConfig } from "vitest/config"
 import babel from "@rolldown/plugin-babel"
 
 // https://vite.dev/config/
 export default defineConfig({
+  test: {
+    environment: "node",
+  },
   base: "./",
   plugins: [
     react(),

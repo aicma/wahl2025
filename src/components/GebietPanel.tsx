@@ -44,7 +44,7 @@ export function GebietPanel({
   )
 
   return (
-    <div className="flex flex-col gap-4 rounded-lg border p-4">
+    <div data-testid="gebiet-panel" className="flex flex-col gap-4 rounded-lg border p-4">
       <div className="flex items-center justify-between">
         <GebietSearch
           options={options}
@@ -52,14 +52,14 @@ export function GebietPanel({
           onSelect={onSelect}
         />
         {closeable && (
-        <Button
-          variant="outline"
-          size="icon"
-          aria-label="close"
-          onClick={onClose}
-        >
-          <X />
-        </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            aria-label="close"
+            onClick={onClose}
+          >
+            <X />
+          </Button>
         )}
       </div>
       {selected && (
