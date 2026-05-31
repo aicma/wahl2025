@@ -45,7 +45,7 @@ export function GebietPanel({
 
   return (
     <div data-testid="gebiet-panel" className="flex flex-col gap-4 rounded-lg border p-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         <GebietSearch
           options={options}
           selected={selectedKey}
