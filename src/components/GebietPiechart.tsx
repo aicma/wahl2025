@@ -54,13 +54,13 @@ export function GebietPiechart({ resultRows }: GebietPiechartProps) {
   const data: ChartDatum[] =
     otherAnzahl > 0
       ? [
-          ...main,
-          {
-            name: "Sonstige",
-            value: otherAnzahl,
-            percent: totalAnzahl > 0 ? (otherAnzahl / totalAnzahl) * 100 : 0,
-          },
-        ]
+        ...main,
+        {
+          name: "Sonstige",
+          value: otherAnzahl,
+          percent: totalAnzahl > 0 ? (otherAnzahl / totalAnzahl) * 100 : 0,
+        },
+      ]
       : main
 
   if (data.length === 0) {
@@ -73,26 +73,20 @@ export function GebietPiechart({ resultRows }: GebietPiechartProps) {
 
   return (
     <ChartContainer config={{}} className="max-h-[320px] min-h-[200px] w-full">
-      <ResponsiveContainer width="100%" height={320}>
-        <PieChart accessibilityLayer>
-          <Pie
-            data={data}
-            dataKey="value"
-            nameKey="name"
-            cx="50%"
-            cy="50%"
-            outerRadius={110}
-            label={({ name, percent }) =>
-              percent != null
-                ? `${name} ${percent.toLocaleString("de-DE", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} %`
-                : name
-            }
-            labelLine={false}
-            shape={PieSector}
-          />
-          <ChartTooltip content={<ChartTooltipContent />} />
-        </PieChart>
-      </ResponsiveContainer>
+      <PieChart accessibilityLayer>
+        <Pie
+          data={data}
+          dataKey="value"
+          nameKey="name"
+          label={({ name, percent }) =>
+            percent != null
+              ? `${name} ${percent.toLocaleString("de-DE", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} %`
+              : name
+          }
+          shape={PieSector}
+        />
+        <ChartTooltip content={<ChartTooltipContent />} />
+      </PieChart>
     </ChartContainer>
   )
 }

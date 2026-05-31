@@ -34,30 +34,30 @@ export function App() {
   return (
     <div className="flex min-h-svh flex-col gap-6 p-6">
       <div className="flex flex-col gap-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap gap-2 items-center justify-between">
           <h1 className="text-lg font-semibold">
             Bundestagswahl 2025 — Ergebnisse
           </h1>
           <div className="flex items-center gap-2">
-            <div className="flex rounded-md border">
-              <Button
-                variant={stimme === 1 ? "default" : "ghost"}
-                size="sm"
-                className="rounded-r-none"
-                onClick={() => setStimme(1)}
-              >
-                Erststimme
-              </Button>
-              <Button
-                variant={stimme === 2 ? "default" : "ghost"}
-                size="sm"
-                className="rounded-l-none"
-                onClick={() => setStimme(2)}
-              >
-                Zweitstimme
-              </Button>
-            </div>
             <ThemeSwitcher />
+          </div>
+          <div className="flex rounded-md border">
+            <Button
+              variant={stimme === 1 ? "default" : "ghost"}
+              size="sm"
+              className="rounded-r-none"
+              onClick={() => setStimme(1)}
+            >
+              Erststimme
+            </Button>
+            <Button
+              variant={stimme === 2 ? "default" : "ghost"}
+              size="sm"
+              className="rounded-l-none"
+              onClick={() => setStimme(2)}
+            >
+              Zweitstimme
+            </Button>
           </div>
         </div>
 
@@ -77,10 +77,9 @@ export function App() {
           />
         )}
         <div
-          className={`grid gap-4 ${
-            selectedKeys.length === 1 ? "grid-cols-1" :
-            selectedKeys.length <= 4 ? "grid-cols-2" : "grid-cols-3"
-          }`}
+          className={`grid gap-4 ${selectedKeys.length === 1 ? "grid-cols-1" :
+            selectedKeys.length <= 4 ? "sm:grid-cols-1 md:grid-cols-2" : "sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+            }`}
         >
           {selectedKeys.map((key, index) => (
             <PanelErrorBoundary key={index}>
@@ -89,6 +88,7 @@ export function App() {
                 resultRows={records}
                 selectedKey={key}
                 stimme={stimme ?? 2}
+                closeable={selectedKeys.length > 1}
                 onSelect={(option) => updateKey(index, option)}
                 onClose={() => removePanel(index)}
               />

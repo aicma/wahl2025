@@ -17,6 +17,7 @@ interface GebietPanelProps {
   resultRows: ResultRow[]
   selectedKey: string | null
   stimme: number
+  closeable?: boolean
   onSelect: (option: GebietOption | null) => void
   onClose: () => void
 }
@@ -26,6 +27,7 @@ export function GebietPanel({
   resultRows,
   selectedKey,
   stimme,
+  closeable = true,
   onSelect,
   onClose,
 }: GebietPanelProps) {
@@ -49,6 +51,7 @@ export function GebietPanel({
           selected={selectedKey}
           onSelect={onSelect}
         />
+        {closeable && (
         <Button
           variant="outline"
           size="icon"
@@ -57,6 +60,7 @@ export function GebietPanel({
         >
           <X />
         </Button>
+        )}
       </div>
       {selected && (
         <>

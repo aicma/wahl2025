@@ -39,7 +39,7 @@ export function GebietResultsTable({ rows }: GebietResultsTableProps) {
   ]
 
   const table = useReactTable({
-    data: rows.filter((r) => r.Prozent), // Only show Zweitstimme results in the table
+    data: rows,
     columns,
     state: {
       sorting: sort,
