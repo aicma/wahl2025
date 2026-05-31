@@ -15,7 +15,7 @@
 - target Device is Desktop. Large Mobile devices work too. But <460px is not supported
 
 ## Features
-- n-Region Panels
+- up to 4 Region Panels
 - as soon as >1 Panels are selected sticky compare view is displayed
 - Light/Dark/System Colors modes
 
