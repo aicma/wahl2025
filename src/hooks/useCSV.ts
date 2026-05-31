@@ -45,9 +45,9 @@ export function useCSV(url: string, options: ParseCsvOptions): UseCSVResult {
     const gebietOptions = useMemo<GebietOption[]>(
         () =>
             records.reduce<GebietOption[]>((acc, row) => {
-                if (!acc.some((o) => o.key === `${row.Gebietsart}${row.Gebietsnummer}`)) {
+                if (!acc.some((o) => o.key === `${row.Gebietsart}:${row.Gebietsnummer}`)) {
                     acc.push({
-                        key: `${row.Gebietsart}${row.Gebietsnummer}`,
+                        key: `${row.Gebietsart}:${row.Gebietsnummer}`,
                         gebietsart: row.Gebietsart,
                         gebietsnummer: row.Gebietsnummer,
                         gebietsname: row.Gebietsname,

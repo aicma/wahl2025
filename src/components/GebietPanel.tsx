@@ -16,6 +16,7 @@ interface GebietPanelProps {
   options: GebietOption[]
   resultRows: ResultRow[]
   selectedKey: string | null
+  stimme: number
   onSelect: (option: GebietOption | null) => void
   onClose: () => void
 }
@@ -24,19 +25,20 @@ export function GebietPanel({
   options,
   resultRows,
   selectedKey,
+  stimme,
   onSelect,
   onClose,
 }: GebietPanelProps) {
   const selected = options.find((o) => o.key === selectedKey) ?? null
 
   const selectedRows = resultRows.filter(
-    (r) => `${r.Gebietsart}${r.Gebietsnummer}` === selectedKey
+    (r) => `${r.Gebietsart}:${r.Gebietsnummer}` === selectedKey
   )
   const systemRows = selectedRows.filter(
     (r) => r.Gruppenart === "System-Gruppe"
   )
   const dataRows = selectedRows.filter(
-    (r) => r.Gruppenart !== "System-Gruppe" && r.Stimme === 2
+    (r) => r.Gruppenart !== "System-Gruppe" && r.Stimme === stimme
   )
 
   return (
@@ -58,14 +60,6 @@ export function GebietPanel({
       </div>
       {selected && (
         <>
-          <p className="text-sm text-muted-foreground">
-            Selected:{" "}
-            <span className="font-medium text-foreground">
-              {selected.gebietsname}
-            </span>{" "}
-            ({selected.gebietsart}, Nr. {selected.gebietsnummer})
-          </p>
-
           <GebietPiechart resultRows={dataRows} />
           <GebietContext systemRows={systemRows} />
           <Collapsible>
@@ -75,7 +69,7 @@ export function GebietPanel({
                 size="sm"
                 className="flex w-full items-center justify-between"
               >
-                Ergebnistabelle
+                {stimme === 1 ? "Erststimmen-Ergebnisse" : "Zweitstimmen-Ergebnisse"}
                 <ChevronsUpDown className="h-4 w-4" />
               </Button>
             </CollapsibleTrigger>

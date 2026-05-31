@@ -2,7 +2,6 @@ import type { ResultRow } from "@/schema/kerg2"
 
 interface GebietContextProps {
   systemRows: ResultRow[]
-  stimmme?: number
 }
 
 interface StatItem {

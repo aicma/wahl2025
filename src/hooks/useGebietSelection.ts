@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { GebietOption } from "@/schema/gebietOptions"
 
 const STORAGE_KEY = "gebiet-selected-keys";
-const DEFAULT_KEY = "Bund99";
+const DEFAULT_KEY = "Bund:99";
 
 function serialize(keys: (string | null)[]): string {
   return keys.map((k) => k ?? "").join(",");
@@ -29,6 +29,8 @@ function persist(keys: (string | null)[]) {
   window.history.replaceState(null, "", `${window.location.pathname}?${params.toString()}`);
 }
 
+const MAX_PANELS = 4
+
 export function useGebietSelection() {
   const [selectedKeys, setSelectedKeys] = useState<(string | null)[]>(() =>
     readInitial(),
@@ -52,11 +54,12 @@ export function useGebietSelection() {
 
   function addPanel(key: string = DEFAULT_KEY) {
     setSelectedKeys((keys) => {
-      const next = [...keys, key];
-      persist(next);
-      return next;
-    });
+      if (keys.length >= MAX_PANELS) return keys
+      const next = [...keys, key]
+      persist(next)
+      return next
+    })
   }
 
-  return { selectedKeys, updateKey, removePanel, addPanel } as const;
+  return { selectedKeys, updateKey, removePanel, addPanel, atMax: selectedKeys.length >= MAX_PANELS } as const;
 }

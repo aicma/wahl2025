@@ -55,7 +55,7 @@ export function GebietSearch({
           role="combobox"
           aria-expanded={open}
           disabled={disabled}
-          className="w-72 justify-between"
+          className="w-72 justify-between text-base font-medium"
         >
           <span className="truncate">
             {selected

@@ -31,7 +31,7 @@ const PieSector = (
 
 export function GebietPiechart({ resultRows }: GebietPiechartProps) {
   const qualifying = resultRows.filter(
-    (row) => row.Stimme === 2 && row.Anzahl != null && row.Anzahl > 0
+    (row) => row.Anzahl != null && row.Anzahl > 0
   )
 
   const main: ChartDatum[] = qualifying

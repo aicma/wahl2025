@@ -1,10 +1,12 @@
-import { useCSV } from "@/lib/hooks/useCSV"
+import { useCSV } from "@/hooks/useCSV"
 import { kerg2RowSchema } from "@/schema/kerg2"
 import { GebietPanel } from "@/components/GebietPanel"
 import { GebietBarchart } from "@/components/GebietBarchart"
 import { Button } from "@/components/ui/button"
-import { useGebietSelection } from "@/lib/hooks/useGebietSelection"
+import { useGebietSelection } from "@/hooks/useGebietSelection"
+import { useStimmeSelector } from "@/hooks/useStimmeSelector"
 import { ThemeSwitcher } from "@/components/ThemeSwitcher"
+import { PanelErrorBoundary } from "@/components/PanelErrorBoundary"
 
 const BTW25_CSV_URL = import.meta.env.DEV
   ? "/csv-proxy/bundestagswahlen/2025/ergebnisse/opendata/btw25/csv/kerg2.csv"
@@ -17,8 +19,8 @@ const BTW25_PARSE_OPTIONS = {
 
 export function App() {
   const { records, gebietOptions, loading, status } = useCSV(BTW25_CSV_URL, BTW25_PARSE_OPTIONS)
-  const { selectedKeys, updateKey, removePanel, addPanel } =
-    useGebietSelection()
+  const { selectedKeys, updateKey, removePanel, addPanel, atMax } = useGebietSelection()
+  const [stimme, setStimme] = useStimmeSelector()
 
   if (loading)
     return (
@@ -36,7 +38,27 @@ export function App() {
           <h1 className="text-lg font-semibold">
             Bundestagswahl 2025 — Ergebnisse
           </h1>
-          <ThemeSwitcher />
+          <div className="flex items-center gap-2">
+            <div className="flex rounded-md border">
+              <Button
+                variant={stimme === 1 ? "default" : "ghost"}
+                size="sm"
+                className="rounded-r-none"
+                onClick={() => setStimme(1)}
+              >
+                Erststimme
+              </Button>
+              <Button
+                variant={stimme === 2 ? "default" : "ghost"}
+                size="sm"
+                className="rounded-l-none"
+                onClick={() => setStimme(2)}
+              >
+                Zweitstimme
+              </Button>
+            </div>
+            <ThemeSwitcher />
+          </div>
         </div>
 
         {status && (
@@ -51,28 +73,36 @@ export function App() {
             selectedKeys={selectedKeys}
             options={gebietOptions}
             resultRows={records}
+            stimme={stimme ?? 2}
           />
         )}
         <div
-          className={`grid gap-4 ${selectedKeys.length > 1 ? "grid-cols-2" : ""}`}
+          className={`grid gap-4 ${
+            selectedKeys.length === 1 ? "grid-cols-1" :
+            selectedKeys.length <= 4 ? "grid-cols-2" : "grid-cols-3"
+          }`}
         >
           {selectedKeys.map((key, index) => (
-            <GebietPanel
-              key={index}
-              options={gebietOptions}
-              resultRows={records}
-              selectedKey={key}
-              onSelect={(option) => updateKey(index, option)}
-              onClose={() => removePanel(index)}
-            />
+            <PanelErrorBoundary key={index}>
+              <GebietPanel
+                options={gebietOptions}
+                resultRows={records}
+                selectedKey={key}
+                stimme={stimme ?? 2}
+                onSelect={(option) => updateKey(index, option)}
+                onClose={() => removePanel(index)}
+              />
+            </PanelErrorBoundary>
           ))}
         </div>
-        <Button
-          className="fixed bottom-6 left-1/2 -translate-x-1/2 rounded-full"
-          onClick={() => addPanel()}
-        >
-          + Add Gebiet
-        </Button>
+        {!atMax && (
+          <Button
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 rounded-full"
+            onClick={() => addPanel()}
+          >
+            + Add Gebiet
+          </Button>
+        )}
       </div>
     </div>
   )

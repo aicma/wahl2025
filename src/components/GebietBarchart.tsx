@@ -7,6 +7,7 @@ interface GebietBarchartProps {
   selectedKeys: (string | null)[]
   options: GebietOption[]
   resultRows: ResultRow[]
+  stimme: number
 }
 
 const COLORS = [
@@ -31,6 +32,7 @@ export function GebietBarchart({
   selectedKeys,
   options,
   resultRows,
+  stimme,
 }: GebietBarchartProps) {
   const activeKeys = selectedKeys.filter((k): k is string => k !== null)
 
@@ -41,9 +43,9 @@ export function GebietBarchart({
     name: options.find((o) => o.key === key)?.gebietsname ?? key,
     rows: resultRows.filter(
       (r) =>
-        `${r.Gebietsart}${r.Gebietsnummer}` === key &&
+        `${r.Gebietsart}:${r.Gebietsnummer}` === key &&
         r.Gruppenart !== "System-Gruppe" &&
-        r.Stimme === 2 &&
+        r.Stimme === stimme &&
         r.Prozent != null &&
         r.Prozent > 1 // Filter out parties with less than 1% to reduce clutter
     ),
