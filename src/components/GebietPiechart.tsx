@@ -2,7 +2,6 @@ import {
   PieChart,
   Pie,
   Sector,
-  ResponsiveContainer,
   type PieSectorShapeProps,
 } from "recharts"
 import {
