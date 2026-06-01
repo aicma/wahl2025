@@ -22,6 +22,11 @@ interface GebietPanelProps {
   onClose: () => void
 }
 
+/**
+ * Core-component to display the data of a selected "Gebiet" (region) in the application. 
+ * It includes a search component for selecting the Gebiet, a pie chart for visualizing the results, contextual information about the Gebiet, and a collapsible section for detailed results. 
+ * The component also supports closing the panel if multiple panels are open. 
+ */
 export function GebietPanel({
   options,
   resultRows,

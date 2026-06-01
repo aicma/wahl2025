@@ -15,6 +15,12 @@ export interface ParseCsvOptions {
   rowSchema?: z.ZodType<ResultRow>;
 }
 
+/**
+ * Parses a CSV string into an array of rows, optionally validating each row against a Zod schema.
+ * @param csvText The CSV string to parse.
+ * @param options Options for parsing the CSV file.
+ * @returns A promise that resolves to an array of parsed and validated rows.
+ */
 export function parseCsv(
   csvText: string,
   options: ParseCsvOptions = {},

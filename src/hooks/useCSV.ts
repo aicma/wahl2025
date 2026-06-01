@@ -10,7 +10,12 @@ interface UseCSVResult {
     loading: boolean
     status: { ok: boolean; message: string } | null
 }
-
+/**
+ * Custom hook to fetch and parse CSV data. Provides the parsed records, unique Gebiet options, loading state, and Error status of the fetch operation.
+ * @param url The URL of the CSV file to fetch. This is constant for now. but could be made dynamic in the future to allow for different datasets.
+ * @param options Options for parsing the CSV file.
+ * @returns An object containing the parsed records, Gebiet options, loading state, and status.
+ */
 export function useCSV(url: string, options: ParseCsvOptions): UseCSVResult {
     const [records, setRecords] = useState<ResultRow[]>([])
     const [loading, setLoading] = useState(false)

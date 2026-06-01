@@ -21,6 +21,10 @@ function StatRow({ label, value, unit }: StatItem) {
   )
 }
 
+/**
+ * Takes the system rows of a Gebiet and extracts contextual information such as the number of eligible voters, actual voters, and voter turnout. 
+ * This information is then displayed in a structured format. If no relevant information is found, the component returns null.
+ */
 export function GebietContext({ systemRows }: GebietContextProps) {
   const find = (gruppenname: string, stimme?: number) =>
     systemRows.find(

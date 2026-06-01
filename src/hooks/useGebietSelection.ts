@@ -31,6 +31,10 @@ function persist(keys: (string | null)[]) {
 
 const MAX_PANELS = 4
 
+/**
+ * Custom hook to manage the selection of "Gebiet" (region) panels in the application. It reads the initial value from the URL or localStorage, and provides functions to update, remove, and add panels. The selection is persisted in both the URL and localStorage, allowing for state to be maintained across page reloads and shared via URL.
+ * @returns a tuple of the selected keys, a function to update, remove and add Panel as well as a bool if the max amount of Panels is reached
+ */
 export function useGebietSelection() {
   const [selectedKeys, setSelectedKeys] = useState<(string | null)[]>(() =>
     readInitial(),
